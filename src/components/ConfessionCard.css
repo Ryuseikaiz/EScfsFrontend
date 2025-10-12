@@ -1,0 +1,153 @@
+.confession-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.confession-card:hover {
+  transform: translateY(-4px);
+}
+
+.confession-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.es-id {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.confession-date {
+  font-size: 14px;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.confession-content {
+  flex: 1;
+  line-height: 1.8;
+  color: var(--text-dark);
+}
+
+.confession-content p {
+  margin: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.confession-image {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.confession-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.confession-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.confession-images-grid .confession-image {
+  aspect-ratio: 1;
+}
+
+.confession-images-grid .confession-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fb-comments-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border-color);
+}
+
+.confession-image-placeholder {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.confession-image-placeholder svg {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.confession-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.fb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1877f2, #0c5bc6);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
+}
+
+.fb-link:hover {
+  background: linear-gradient(135deg, #0c5bc6, #1877f2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4);
+}
+
+.source-badge {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .confession-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .es-id {
+    font-size: 18px;
+  }
+}
