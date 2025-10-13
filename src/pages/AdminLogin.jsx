@@ -40,7 +40,7 @@ function AdminLogin() {
       navigate('/admin/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError('Sai tên đăng nhập hoặc mật khẩu');
+      setError('Có dỡn hong má?');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ function AdminLogin() {
               <FaUserShield />
             </div>
             <h1>Admin Login</h1>
-            <p>EnStars!! Confession Management</p>
+            <p>Hội đồng quản trị ES!!VN Confession</p>
           </div>
 
           {error && (
@@ -116,7 +116,7 @@ function AdminLogin() {
 
         <div className="login-info">
           <p>🔒 Khu vực quản trị</p>
-          <p>Chỉ dành cho admin của EnStars!! Confession</p>
+          <p>Muốn vào thì liên hệ ngay Eichi Tenshouin</p>
         </div>
       </div>
     </div>

@@ -106,7 +106,7 @@ function ConfessionForm({ onSubmit, onCancel }) {
               className="form-textarea"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Chia sẻ suy nghĩ của bạn về EnStars!!..."
+              placeholder="Chia sẻ suy nghĩ của bạn..."
               rows="8"
               maxLength="1000"
               disabled={loading}
@@ -136,7 +136,7 @@ function ConfessionForm({ onSubmit, onCancel }) {
                 <label htmlFor="image-upload" className="upload-label">
                   <FaImage className="upload-icon" />
                   <span>Chọn ảnh để tải lên ({imagePreviews.length}/5)</span>
-                  <small>JPG, PNG, GIF (Max 10MB mỗi ảnh)</small>
+                  <small>JPG, PNG, GIF (CẦN UP VID THÌ LH ADMIN)</small>
                 </label>
               </div>
             )}
@@ -160,12 +160,6 @@ function ConfessionForm({ onSubmit, onCancel }) {
               </div>
             )}
           </div>
-
-          <div className="form-info">
-            <p>📝 Confession của bạn sẽ được admin xem xét trước khi đăng.</p>
-            <p>💜 Hãy giữ thái độ tôn trọng và tích cực nhé!</p>
-          </div>
-
           <div className="form-actions">
             <button
               type="button"

@@ -31,6 +31,43 @@ export const getConfessions = async (limit = 100) => {
   return response.data.confessions || response.data; // Handle both old and new format
 };
 
+// Get confessions progressively (multiple batches)
+export const getConfessionsProgressive = async (totalLimit = 500, batchSize = 100, onBatchReceived) => {
+  const allConfessions = [];
+  const batches = Math.ceil(totalLimit / batchSize);
+  
+  for (let i = 0; i < batches; i++) {
+    try {
+      const response = await api.get('/confessions', { 
+        params: { limit: batchSize } 
+      });
+      
+      const newData = response.data.confessions || response.data;
+      
+      // Filter out duplicates based on ID
+      const existingIds = new Set(allConfessions.map(c => c._id || c.id));
+      const uniqueNew = newData.filter(c => !existingIds.has(c._id || c.id));
+      
+      allConfessions.push(...uniqueNew);
+      
+      // Callback to update UI immediately
+      if (onBatchReceived) {
+        onBatchReceived([...allConfessions], allConfessions.length, totalLimit);
+      }
+      
+      // Stop if we got less than expected (no more data)
+      if (newData.length < batchSize || allConfessions.length >= totalLimit) {
+        break;
+      }
+    } catch (error) {
+      console.error(`Error fetching batch ${i + 1}:`, error);
+      break;
+    }
+  }
+  
+  return allConfessions;
+};
+
 export const submitConfession = async (formData) => {
   const response = await api.post('/confessions/submit', formData);
   return response.data;

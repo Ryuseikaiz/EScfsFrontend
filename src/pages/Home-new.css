@@ -39,13 +39,13 @@ body {
 }
 
 .navbar {
-  max-width: 1400px;
+  max-width: 2000px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 1.25rem 180px; /* Add padding to avoid chibi characters */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .logo-section {
@@ -77,16 +77,16 @@ body {
 /* Search Bar */
 .search-section {
   flex: 1;
-  max-width: 600px;
+  max-width: 1000px;
   position: relative;
 }
 
 .search-bar {
   width: 100%;
-  padding: 0.875rem 3rem 0.875rem 1.5rem;
+  padding: 1.1rem 3.5rem 1.1rem 1.75rem;
   border: 2px solid var(--light-pink);
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
   background: #fafafa;
 }
@@ -100,11 +100,11 @@ body {
 
 .search-icon {
   position: absolute;
-  right: 1.5rem;
+  right: 1.75rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--primary-pink);
-  font-size: 1.25rem;
+  font-size: 1.4rem;
 }
 
 /* Navigation Buttons */
@@ -157,42 +157,40 @@ body {
 }
 
 .hero-content {
-  background: linear-gradient(135deg, var(--primary-pink) 0%, var(--dark-pink) 100%);
+  background: url('https://i.ibb.co/C4V2NNw/latest.png') center center / cover no-repeat;
   border-radius: 20px;
-  padding: 4rem 3rem;
+  padding: 2rem 2rem;
   color: white;
   text-align: center;
   box-shadow: var(--shadow-hover);
   position: relative;
   overflow: hidden;
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-content::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 30px 30px;
-  animation: movePattern 20s linear infinite;
-}
-
-@keyframes movePattern {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(30px, 30px); }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 105, 180, 0.3);
+  z-index: 0;
 }
 
 .hero-content h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
 }
 
 .hero-content p {
-  font-size: 1.25rem;
+  font-size: 1rem;
   opacity: 0.95;
   position: relative;
   z-index: 1;
@@ -279,35 +277,6 @@ body {
 
 .confession-card:hover .card-image {
   transform: scale(1.1);
-}
-
-.favorite-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  z-index: 10;
-}
-
-.favorite-btn:hover {
-  transform: scale(1.1);
-  background: var(--primary-pink);
-  color: white;
-}
-
-.favorite-btn.liked {
-  background: var(--primary-pink);
-  color: white;
 }
 
 .card-content {
@@ -476,14 +445,14 @@ body {
 
 .navbar-character.left {
   top: -10px;
-  left: 10%;
+  left: 2%;
   width: 80px;
   animation: float 3s ease-in-out infinite;
 }
 
 .navbar-character.right {
   top: -10px;
-  right: 10%;
+  right: 2%;
   width: 80px;
   animation: float 3s ease-in-out infinite 1.5s;
 }
