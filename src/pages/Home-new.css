@@ -255,6 +255,11 @@ body {
 .confession-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
+  border-color: var(--primary-pink);
+}
+
+.confession-card:active {
+  transform: translateY(-4px);
 }
 
 .card-image-container {

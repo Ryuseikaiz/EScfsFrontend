@@ -1,0 +1,328 @@
+/* Confession Modal - Pink Pastel Theme */
+.confession-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+.confession-modal-container {
+  background: white;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: none;
+  min-height: auto;
+  overflow: visible;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+  border: 2px solid #ffb6d9;
+  animation: slideUp 0.3s ease;
+  margin: 2rem auto;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: sticky;
+  top: 1rem;
+  right: 1rem;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ff69b4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+}
+
+.modal-close-btn:hover {
+  background: #ff1493;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* Modal Header */
+.modal-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 2px solid #ffeef8;
+}
+
+.modal-title {
+  font-size: 2rem;
+  color: #ff69b4;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.modal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.modal-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.modal-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ff69b4;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 2rem;
+}
+
+/* Images */
+.modal-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.modal-image:hover {
+  transform: scale(1.02);
+}
+
+/* Content */
+.modal-content {
+  background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 2px solid #ffb6d9;
+}
+
+.modal-content p {
+  margin: 0;
+  line-height: 1.8;
+  color: #333;
+  font-size: 1.05rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Facebook Link Button */
+.modal-fb-link {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.fb-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #4267B2, #1877F2);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(66, 103, 178, 0.3);
+}
+
+.fb-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(66, 103, 178, 0.4);
+}
+
+/* Facebook Comments Section */
+.modal-facebook-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #ffeef8;
+}
+
+.facebook-section-title {
+  font-size: 1.5rem;
+  color: #ff69b4;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.facebook-embed-wrapper {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #ffb6d9;
+  overflow: hidden;
+}
+
+.facebook-embed-wrapper iframe {
+  width: 100% !important;
+  min-height: 500px;
+  border-radius: 8px;
+}
+
+.facebook-comments-wrapper {
+  background: #fafafa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #ffb6d9;
+}
+
+/* No Facebook Info */
+.no-facebook-info {
+  text-align: center;
+  padding: 2rem;
+  background: #fff0f5;
+  border-radius: 12px;
+  border: 2px solid #ffb6d9;
+  color: #666;
+}
+
+.no-facebook-info p {
+  margin: 0.5rem 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .confession-modal-overlay {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .confession-modal-container {
+    max-height: none;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  .modal-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem 1rem;
+  }
+
+  .modal-close-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+  }
+
+  .modal-images {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-stats {
+    gap: 1rem;
+  }
+
+  .fb-link-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .facebook-embed-wrapper {
+    padding: 0.5rem;
+  }
+
+  .facebook-embed-wrapper iframe {
+    min-height: 600px;
+  }
+
+  .facebook-comments-wrapper {
+    padding: 1rem;
+  }
+}
+
+/* Scrollbar Styling for Modal */
+.confession-modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.confession-modal-container::-webkit-scrollbar-track {
+  background: #ffeef8;
+  border-radius: 10px;
+}
+
+.confession-modal-container::-webkit-scrollbar-thumb {
+  background: #ff69b4;
+  border-radius: 10px;
+}
+
+.confession-modal-container::-webkit-scrollbar-thumb:hover {
+  background: #ff1493;
+}

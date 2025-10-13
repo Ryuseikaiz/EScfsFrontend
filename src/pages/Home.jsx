@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaHeart, FaPaperPlane, FaUserShield, FaSearch, FaClock, FaEye } from 'react-icons/fa';
 import { getConfessions, getConfessionsProgressive, submitConfession } from '../services/api';
 import ConfessionForm from '../components/ConfessionForm';
+import ConfessionModal from '../components/ConfessionModal';
 import './Home-new.css';
 
 function Home() {
@@ -10,6 +11,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [selectedConfession, setSelectedConfession] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12); // 12 confessions per page
   const [searchQuery, setSearchQuery] = useState('');
@@ -111,7 +113,9 @@ function Home() {
 
   const getFacebookUrl = (confession) => {
     if (confession.id && confession.id.includes('_')) {
-      return `https://www.facebook.com/${confession.id}`;
+      const [pageId, postId] = confession.id.split('_');
+      // Use permalink format that works on both desktop and mobile
+      return `https://www.facebook.com/permalink.php?story_fbid=${postId}&id=${pageId}`;
     }
     return null;
   };
@@ -225,7 +229,12 @@ function Home() {
           <>
             <div className="confessions-grid">
               {currentConfessions.map((confession) => (
-                <div key={confession._id} className="confession-card">
+                <div 
+                  key={confession._id} 
+                  className="confession-card"
+                  onClick={() => setSelectedConfession(confession)}
+                  style={{ cursor: 'pointer' }}
+                >
                   {/* Card Image */}
                   <div className="card-image-container">
                     {confession.images && confession.images.length > 0 ? (
@@ -285,7 +294,8 @@ function Home() {
                       </span>
                       <button 
                         className="card-action-btn"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           const fbUrl = getFacebookUrl(confession);
                           if (fbUrl) {
                             window.open(fbUrl, '_blank');
@@ -387,6 +397,14 @@ function Home() {
             />
           </div>
         </div>
+      )}
+
+      {/* Confession Detail Modal */}
+      {selectedConfession && (
+        <ConfessionModal 
+          confession={selectedConfession}
+          onClose={() => setSelectedConfession(null)}
+        />
       )}
     </div>
   );
