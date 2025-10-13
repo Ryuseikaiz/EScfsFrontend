@@ -4,6 +4,7 @@ import './ConfessionModal.css';
 
 function ConfessionModal({ confession, onClose }) {
   const [showFallback, setShowFallback] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   
   useEffect(() => {
     // Prevent body scroll when modal is open
@@ -11,39 +12,59 @@ function ConfessionModal({ confession, onClose }) {
     
     // Log for debugging
     console.log('Modal opened for confession:', confession);
+    console.log('Current URL:', window.location.href);
     
-    // Check if running on localhost
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    // Check if running on production
+    const isProduction = window.location.hostname.includes('vercel.app') || 
+                         window.location.hostname.includes('enstarsconfess');
     
-    // Load/Reload Facebook SDK plugins
-    if (window.FB) {
-      console.log('Facebook SDK found, parsing plugins...');
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        try {
-          window.FB.XFBML.parse(document.querySelector('.modal-facebook-section'));
-          console.log('Facebook plugins parsed successfully');
-          
-          // If localhost, show fallback after attempting to load
-          if (isLocalhost) {
-            setTimeout(() => setShowFallback(true), 2000);
-          }
-        } catch (error) {
-          console.error('Error parsing Facebook plugins:', error);
-          setShowFallback(true);
-        }
-      }, 500);
+    console.log('Is Production:', isProduction);
+    
+    // If not production, show fallback immediately
+    if (!isProduction) {
+      console.log('Not on production domain, showing fallback immediately');
+      setShowFallback(true);
+      setIsLoading(false);
     } else {
-      console.warn('Facebook SDK not loaded yet');
-      // Retry after a delay if FB SDK not ready
-      setTimeout(() => {
-        if (window.FB) {
-          console.log('Facebook SDK loaded on retry, parsing...');
-          window.FB.XFBML.parse(document.querySelector('.modal-facebook-section'));
-        } else {
-          setShowFallback(true);
-        }
-      }, 2000);
+      // On production, try to load Facebook plugins
+      if (window.FB) {
+        console.log('Facebook SDK found, parsing plugins...');
+        setTimeout(() => {
+          try {
+            window.FB.XFBML.parse(document.querySelector('.modal-facebook-section'));
+            console.log('Facebook plugins parsed successfully');
+            // Give it 1 second to load, then stop loading indicator and show fallback
+            setTimeout(() => {
+              setIsLoading(false);
+              setShowFallback(true); // Always show fallback for better UX
+              console.log('Showing fallback for better interaction');
+            }, 1000);
+          } catch (error) {
+            console.error('Error parsing Facebook plugins:', error);
+            setShowFallback(true);
+            setIsLoading(false);
+          }
+        }, 500);
+      } else {
+        console.warn('Facebook SDK not loaded yet');
+        // Retry once after delay
+        setTimeout(() => {
+          if (window.FB) {
+            console.log('Facebook SDK loaded on retry, parsing...');
+            window.FB.XFBML.parse(document.querySelector('.modal-facebook-section'));
+            setTimeout(() => {
+              setIsLoading(false);
+              const commentsBox = document.querySelector('.fb-comments iframe');
+              if (!commentsBox) {
+                setShowFallback(true);
+              }
+            }, 3000);
+          } else {
+            setShowFallback(true);
+            setIsLoading(false);
+          }
+        }, 1500);
+      }
     }
     
     return () => {
