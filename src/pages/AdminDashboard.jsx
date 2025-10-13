@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock } from 'react-icons/fa';
+import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock, FaMoon, FaSun } from 'react-icons/fa';
 import { getPendingConfessions, approveConfession, deleteConfession, getStats } from '../services/api';
 import './AdminDashboard.css';
 
@@ -12,6 +12,7 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [processingId, setProcessingId] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,15 @@ function AdminDashboard() {
 
     fetchData();
   }, [navigate, sourceFilter, statusFilter]);
+
+  useEffect(() => {
+    // Apply dark mode class to body
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
 
   const fetchData = async () => {
     try {
@@ -115,9 +125,18 @@ function AdminDashboard() {
               <h1>Admin Dashboard</h1>
               <p>Quản lý Confessions</p>
             </div>
-            <button className="btn btn-danger" onClick={handleLogout}>
-              <FaSignOutAlt /> Đăng xuất
-            </button>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <button 
+                className="theme-toggle-btn-admin"
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                title={isDarkMode ? "Chuyển sang Light Mode" : "Chuyển sang Dark Mode"}
+              >
+                {isDarkMode ? <FaSun /> : <FaMoon />}
+              </button>
+              <button className="btn btn-danger" onClick={handleLogout}>
+                <FaSignOutAlt /> Đăng xuất
+              </button>
+            </div>
           </div>
         </div>
       </header>

@@ -92,6 +92,11 @@ body {
   color: white;
 }
 
+body.dark-mode .btn-primary {
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+  box-shadow: 0 2px 8px rgba(233, 30, 99, 0.4);
+}
+
 .btn-success {
   background: var(--success-color);
   color: white;
@@ -105,6 +110,17 @@ body {
 .btn-secondary {
   background: var(--text-light);
   color: white;
+}
+
+body.dark-mode .btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #b0b0b0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e0e0e0;
 }
 
 /* Cards */

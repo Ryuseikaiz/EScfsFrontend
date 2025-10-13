@@ -6,6 +6,52 @@
   justify-content: center;
   padding: 20px;
   background: linear-gradient(180deg, #fff 0%, #ffeef8 100%);
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+body.dark-mode .admin-login-page {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.theme-toggle-btn-fixed {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ffb6d9;
+  background: white;
+  color: #ff69b4;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+  z-index: 1000;
+}
+
+.theme-toggle-btn-fixed:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.3);
+  background: #ff69b4;
+  color: white;
+  border-color: #ff69b4;
+}
+
+body.dark-mode .theme-toggle-btn-fixed {
+  background: #1e1e2e;
+  border-color: rgba(255, 105, 180, 0.3);
+  color: #ffd700;
+}
+
+body.dark-mode .theme-toggle-btn-fixed:hover {
+  background: #ffd700;
+  color: #1a1a2e;
+  border-color: #ffd700;
 }
 
 .login-container {
@@ -21,6 +67,13 @@
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
   border: 2px solid #ffb6d9;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .login-card {
+  background: #1e1e2e;
+  border-color: rgba(255, 105, 180, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
 .login-header {
@@ -42,16 +95,30 @@
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
 }
 
+body.dark-mode .admin-icon {
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+}
+
 .login-header h1 {
   font-size: 28px;
   color: #333;
   margin-bottom: 8px;
   font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+body.dark-mode .login-header h1 {
+  color: #e0e0e0;
 }
 
 .login-header p {
   color: #666;
   font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+body.dark-mode .login-header p {
+  color: #b0b0b0;
 }
 
 .login-btn {
@@ -70,10 +137,19 @@
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
+body.dark-mode .login-btn {
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+}
+
 .login-btn:hover {
   background: #ff1493;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(255, 105, 180, 0.4);
+}
+
+body.dark-mode .login-btn:hover {
+  box-shadow: 0 8px 24px rgba(233, 30, 99, 0.6);
 }
 
 .login-btn:disabled {
@@ -97,6 +173,16 @@
   padding: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
+}
+
+body.dark-mode .back-to-home .btn {
+  background: #1e1e2e;
+  color: #ff8dc7;
+  border-color: rgba(255, 105, 180, 0.3);
+}
+
+body.dark-mode .back-to-home .btn:hover {
+  background: rgba(255, 105, 180, 0.2);
 }
 
 .back-to-home .btn:hover {

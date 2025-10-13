@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUserShield, FaLock, FaHome } from 'react-icons/fa';
+import { FaUserShield, FaLock, FaHome, FaMoon, FaSun } from 'react-icons/fa';
 import { adminLogin } from '../services/api';
 import './AdminLogin.css';
 
@@ -9,6 +9,7 @@ function AdminLogin() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,15 @@ function AdminLogin() {
       navigate('/admin/dashboard');
     }
   }, [navigate]);
+
+  useEffect(() => {
+    // Apply dark mode class to body
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +58,14 @@ function AdminLogin() {
 
   return (
     <div className="admin-login-page">
+      <button 
+        className="theme-toggle-btn-fixed"
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        title={isDarkMode ? "Chuyển sang Light Mode" : "Chuyển sang Dark Mode"}
+      >
+        {isDarkMode ? <FaSun /> : <FaMoon />}
+      </button>
+
       <div className="login-container">
         <div className="login-card card">
           <div className="login-header">
