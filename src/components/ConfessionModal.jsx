@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FaTimes, FaClock, FaHeart, FaComment, FaFacebookF, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaTimes, FaClock, FaHeart, FaComment, FaFacebookF, FaChevronLeft, FaChevronRight, FaShareAlt } from 'react-icons/fa';
 import './ConfessionModal.css';
 
 function ConfessionModal({ confession, onClose }) {
@@ -162,9 +162,9 @@ function ConfessionModal({ confession, onClose }) {
             <p>{confession.content}</p>
           </div>
 
-          {/* Facebook Post Link */}
+          {/* Facebook Post Link & Share */}
           {fbUrl && (
-            <div className="modal-fb-link">
+            <div className="modal-fb-actions">
               <a 
                 href={fbUrl} 
                 target="_blank" 
@@ -173,84 +173,14 @@ function ConfessionModal({ confession, onClose }) {
               >
                 <FaFacebookF /> Xem trên Facebook
               </a>
-            </div>
-          )}
-
-          {/* Facebook Comments Plugin */}
-          {fbUrl && (
-            <div className="modal-facebook-section">
-              <h3 className="facebook-section-title">💬 Comments & Reactions</h3>
-              <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                Comment và react ngay tại đây bằng tài khoản Facebook của bạn
-              </p>
-              
-              {/* Facebook Like & Share Buttons */}
-              <div style={{ marginBottom: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                <div 
-                  className="fb-like" 
-                  data-href={fbUrl}
-                  data-width=""
-                  data-layout="button_count"
-                  data-action="like"
-                  data-size="large"
-                  data-share="true"
-                ></div>
-              </div>
-
-              {/* Facebook Comments */}
-              <div className="facebook-comments-wrapper">
-                <div 
-                  className="fb-comments" 
-                  data-href={fbUrl}
-                  data-width="100%" 
-                  data-numposts="10"
-                  data-order-by="reverse_time"
-                  data-colorscheme="light"
-                  data-mobile="true"
-                ></div>
-                
-                {/* Loading indicator */}
-                {!showFallback && (
-                  <div style={{ padding: '2rem', textAlign: 'center', color: '#ff69b4' }}>
-                    <div style={{ 
-                      display: 'inline-block',
-                      width: '40px',
-                      height: '40px',
-                      border: '4px solid #ffeef8',
-                      borderTop: '4px solid #ff69b4',
-                      borderRadius: '50%',
-                      animation: 'spin 1s linear infinite'
-                    }}></div>
-                    <p style={{ marginTop: '1rem' }}>Đang tải comments...</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Fallback: Show embedded post if comments don't load */}
-              {showFallback && (
-                <div className="facebook-embed-wrapper" style={{ marginTop: '1rem' }}>
-                  <p style={{ color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
-                    ⚠️ Comments plugin không khả dụng. Đang hiển thị bản preview:
-                  </p>
-                  <iframe
-                    src={`https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(fbUrl)}&width=500&show_text=true&height=500&appId=567416515679221`}
-                    width="100%"
-                    height="600"
-                    style={{ border: 'none', overflow: 'hidden', borderRadius: '12px' }}
-                    scrolling="no"
-                    frameBorder="0"
-                    allowFullScreen={true}
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  ></iframe>
-                </div>
-              )}
-
-              {/* Info Note */}
-              <div style={{ textAlign: 'center', marginTop: '1rem', padding: '1rem', background: '#ffeef8', borderRadius: '12px' }}>
-                <p style={{ color: '#666', marginBottom: '0', fontSize: '0.9rem' }}>
-                  💡 {showFallback ? 'Để comment và react đầy đủ, click nút "Xem trên Facebook" ở trên' : 'Đăng nhập Facebook để comment và react ngay tại đây'}
-                </p>
-              </div>
+              <a 
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fbUrl)}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="fb-share-btn"
+              >
+                <FaShareAlt /> Chia sẻ
+              </a>
             </div>
           )}
 

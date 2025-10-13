@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaHeart, FaPaperPlane, FaUserShield, FaSearch, FaClock, FaEye, FaMusic, FaTimes, FaExpand, FaCompress, FaComment } from 'react-icons/fa';
+import { FaHeart, FaPaperPlane, FaUserShield, FaSearch, FaClock, FaEye, FaMusic, FaTimes, FaExpand, FaCompress, FaComment, FaMoon, FaSun } from 'react-icons/fa';
 import { getConfessions, getConfessionsProgressive, submitConfession } from '../services/api';
 import ConfessionForm from '../components/ConfessionForm';
 import ConfessionModal from '../components/ConfessionModal';
@@ -18,11 +18,21 @@ function Home() {
   const [showSpotify, setShowSpotify] = useState(true); // Hiện player mặc định
   const [isSpotifyExpanded, setIsSpotifyExpanded] = useState(false);
   const [isSpotifyMinimized, setIsSpotifyMinimized] = useState(true); // Bắt đầu ở trạng thái ẩn
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchConfessions();
   }, []);
+
+  useEffect(() => {
+    // Apply dark mode class to body
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
 
   const fetchConfessions = async () => {
     try {
@@ -161,6 +171,13 @@ function Home() {
 
           <div className="nav-buttons">
             <button 
+              className="theme-toggle-btn"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={isDarkMode ? "Chuyển sang Light Mode" : "Chuyển sang Dark Mode"}
+            >
+              {isDarkMode ? <FaSun /> : <FaMoon />}
+            </button>
+            <button 
               className="nav-btn primary"
               onClick={() => setShowForm(true)}
             >
@@ -245,7 +262,7 @@ function Home() {
                         className="card-image"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23ffb3d9" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="60" fill="white"%3E♥%3C/text%3E%3C/svg%3E';
+                          e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Cdefs%3E%3ClinearGradient id="grad1" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23a8d8ea;stop-opacity:1" /%3E%3Cstop offset="50%25" style="stop-color:%23aa96da;stop-opacity:1" /%3E%3Cstop offset="100%25" style="stop-color:%23fcbad3;stop-opacity:1" /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill="url(%23grad1)" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="60" fill="white"%3E♥%3C/text%3E%3C/svg%3E';
                         }}
                       />
                     ) : confession.image ? (
@@ -255,20 +272,12 @@ function Home() {
                         className="card-image"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23ffb3d9" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="60" fill="white"%3E♥%3C/text%3E%3C/svg%3E';
+                          e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Cdefs%3E%3ClinearGradient id="grad1" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%23a8d8ea;stop-opacity:1" /%3E%3Cstop offset="50%25" style="stop-color:%23aa96da;stop-opacity:1" /%3E%3Cstop offset="100%25" style="stop-color:%23fcbad3;stop-opacity:1" /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill="url(%23grad1)" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="60" fill="white"%3E♥%3C/text%3E%3C/svg%3E';
                         }}
                       />
                     ) : (
                       <div 
-                        className="card-image" 
-                        style={{
-                          background: 'linear-gradient(135deg, var(--light-pink) 0%, var(--pastel-pink) 100%)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '3rem',
-                          color: 'white'
-                        }}
+                        className="card-image no-image-placeholder"
                       >
                         <FaHeart />
                       </div>

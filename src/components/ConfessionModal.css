@@ -17,7 +17,7 @@
 }
 
 .confession-modal-container {
-  background: white;
+  background: var(--bg-card, white);
   border-radius: 20px;
   max-width: 900px;
   width: 100%;
@@ -26,9 +26,10 @@
   overflow: visible;
   position: relative;
   box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
-  border: 2px solid #ffb6d9;
+  border: 2px solid var(--border-color, #ffb6d9);
   animation: slideUp 0.3s ease;
   margin: 2rem auto;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Close Button */
@@ -62,6 +63,11 @@
 .modal-header {
   padding: 2rem 2rem 1.5rem;
   border-bottom: 2px solid #ffeef8;
+  transition: border-color 0.3s ease;
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: rgba(255, 105, 180, 0.2);
 }
 
 .modal-title {
@@ -82,8 +88,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #666;
+  color: var(--text-secondary, #666);
   font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .modal-stats {
@@ -179,35 +186,52 @@
   border-radius: 12px;
   margin-bottom: 2rem;
   border: 2px solid #ffb6d9;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .modal-content {
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(255, 105, 180, 0.05) 100%);
+  border-color: rgba(255, 105, 180, 0.3);
 }
 
 .modal-content p {
   margin: 0;
   line-height: 1.8;
-  color: #333;
+  color: var(--text-primary, #333);
   font-size: 1.05rem;
   white-space: pre-wrap;
   word-wrap: break-word;
+  transition: color 0.3s ease;
 }
 
-/* Facebook Link Button */
-.modal-fb-link {
+/* Facebook Actions */
+.modal-fb-actions {
   margin-bottom: 2rem;
   text-align: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.fb-link-btn {
+.fb-link-btn,
+.fb-share-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #4267B2, #1877F2);
   color: white;
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.fb-link-btn {
+  background: linear-gradient(135deg, #4267B2, #1877F2);
   box-shadow: 0 4px 12px rgba(66, 103, 178, 0.3);
 }
 
@@ -216,42 +240,14 @@
   box-shadow: 0 8px 24px rgba(66, 103, 178, 0.4);
 }
 
-/* Facebook Comments Section */
-.modal-facebook-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 2px solid #ffeef8;
+.fb-share-btn {
+  background: linear-gradient(135deg, #1DB954, #1ed760);
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
 }
 
-.facebook-section-title {
-  font-size: 1.5rem;
-  color: #ff69b4;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.facebook-embed-wrapper {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 12px;
-  border: 2px solid #ffb6d9;
-  overflow: hidden;
-}
-
-.facebook-embed-wrapper iframe {
-  width: 100% !important;
-  min-height: 500px;
-  border-radius: 8px;
-}
-
-.facebook-comments-wrapper {
-  background: #fafafa;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 2px solid #ffb6d9;
+.fb-share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(29, 185, 84, 0.4);
 }
 
 /* No Facebook Info */
@@ -261,7 +257,13 @@
   background: #fff0f5;
   border-radius: 12px;
   border: 2px solid #ffb6d9;
-  color: #666;
+  color: var(--text-secondary, #666);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .no-facebook-info {
+  background: rgba(255, 105, 180, 0.1);
+  border-color: rgba(255, 105, 180, 0.3);
 }
 
 .no-facebook-info p {
