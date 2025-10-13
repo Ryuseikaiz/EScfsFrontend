@@ -89,6 +89,11 @@ export const approveConfession = async (id, sourceType) => {
   return response.data;
 };
 
+export const approveAllConfessions = async (sourceFilter = 'all', statusFilter = 'pending') => {
+  const response = await api.post('/admin/approve-all', { sourceFilter, statusFilter });
+  return response.data;
+};
+
 export const deleteConfession = async (id, sourceType) => {
   const response = await api.delete(`/admin/delete/${id}`, { data: { sourceType } });
   return response.data;

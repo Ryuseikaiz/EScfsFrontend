@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock, FaMoon, FaSun } from 'react-icons/fa';
-import { getPendingConfessions, approveConfession, deleteConfession, getStats } from '../services/api';
+import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock, FaMoon, FaSun, FaCheckDouble } from 'react-icons/fa';
+import { getPendingConfessions, approveConfession, approveAllConfessions, deleteConfession, getStats } from '../services/api';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -99,6 +99,37 @@ function AdminDashboard() {
       alert('❌ Lỗi khi xóa confession: ' + (err.response?.data?.error || err.message));
     } finally {
       setProcessingId(null);
+    }
+  };
+
+  const handleApproveAll = async () => {
+    const pendingConfessions = confessions.filter(c => c.status === 'pending');
+    
+    if (pendingConfessions.length === 0) {
+      alert('Không có confession nào đang chờ duyệt!');
+      return;
+    }
+
+    const filterText = sourceFilter === 'all' ? 'tất cả nguồn' : 
+                       sourceFilter === 'website' ? 'từ Website' : 'từ Google Sheets';
+
+    if (!window.confirm(`Duyệt tất cả ${pendingConfessions.length} confession ${filterText}?\n\nQuá trình này có thể mất vài phút.`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      // Call new bulk API
+      const result = await approveAllConfessions(sourceFilter, statusFilter);
+      
+      alert(`✅ Hoàn thành!\n\nĐã duyệt: ${result.successCount} confession\n${result.failCount > 0 ? `Lỗi: ${result.failCount} confession` : 'Không có lỗi!'}`);
+      fetchData();
+    } catch (err) {
+      console.error('Error in bulk approve:', err);
+      alert('❌ Lỗi khi duyệt hàng loạt: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -230,6 +261,20 @@ function AdminDashboard() {
               </button>
             </div>
           </div>
+
+          {/* Bulk Actions */}
+          {statusFilter === 'pending' && confessions.filter(c => c.status === 'pending').length > 0 && (
+            <div className="filter-group bulk-actions">
+              <label>Thao tác hàng loạt:</label>
+              <button
+                className="btn btn-approve-all"
+                onClick={handleApproveAll}
+                disabled={loading}
+              >
+                <FaCheckDouble /> Duyệt tất cả ({confessions.filter(c => c.status === 'pending').length})
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Confessions List */}
