@@ -16,7 +16,7 @@ function ConfessionModal({ confession, onClose }) {
     
     // Check if running on production
     const isProduction = window.location.hostname.includes('vercel.app') || 
-                         window.location.hostname.includes('enstarsconfess');
+                         window.location.hostname.includes('enstarsvn');
     
     console.log('Is Production:', isProduction);
     
