@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { FaTimes, FaClock, FaHeart, FaComment, FaFacebookF } from 'react-icons/fa';
+import { FaTimes, FaClock, FaHeart, FaComment, FaFacebookF, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './ConfessionModal.css';
 
 function ConfessionModal({ confession, onClose }) {
   const [showFallback, setShowFallback] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [imageViewerOpen, setImageViewerOpen] = React.useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
   
   useEffect(() => {
     // Prevent body scroll when modal is open
@@ -75,14 +77,13 @@ function ConfessionModal({ confession, onClose }) {
   const formatDate = (dateString) => {
     if (!dateString) return 'Không rõ';
     const date = new Date(dateString);
-    return date.toLocaleString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
 
   const getFacebookUrl = (confession) => {
@@ -121,19 +122,38 @@ function ConfessionModal({ confession, onClose }) {
         {/* Modal Body */}
         <div className="modal-body">
           {/* Images */}
-          {confession.images && confession.images.length > 0 && (
+          {((confession.images && confession.images.length > 0) || confession.image) && (
             <div className="modal-images">
-              {confession.images.map((img, index) => (
+              {confession.images && confession.images.length > 0 ? (
+                confession.images.map((img, index) => (
+                  <img 
+                    key={index}
+                    src={img} 
+                    alt={`${confession.fullId} - Image ${index + 1}`}
+                    className="modal-image"
+                    onClick={() => {
+                      setCurrentImageIndex(index);
+                      setImageViewerOpen(true);
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                ))
+              ) : confession.image ? (
                 <img 
-                  key={index}
-                  src={img} 
-                  alt={`${confession.fullId} - Image ${index + 1}`}
+                  src={confession.image} 
+                  alt={confession.fullId}
                   className="modal-image"
+                  onClick={() => {
+                    setCurrentImageIndex(0);
+                    setImageViewerOpen(true);
+                  }}
                   onError={(e) => {
                     e.target.style.display = 'none';
                   }}
                 />
-              ))}
+              ) : null}
             </div>
           )}
 
@@ -243,6 +263,49 @@ function ConfessionModal({ confession, onClose }) {
           )}
         </div>
       </div>
+
+      {/* Image Viewer Modal */}
+      {imageViewerOpen && (
+        <div className="image-viewer-overlay" onClick={() => setImageViewerOpen(false)}>
+          <button className="image-viewer-close" onClick={() => setImageViewerOpen(false)}>
+            <FaTimes />
+          </button>
+          
+          <div className="image-viewer-content" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={confession.images ? confession.images[currentImageIndex] : confession.image}
+              alt={`Image ${currentImageIndex + 1}`}
+              className="image-viewer-img"
+            />
+            
+            {confession.images && confession.images.length > 1 && (
+              <>
+                <button 
+                  className="image-viewer-nav prev"
+                  onClick={() => setCurrentImageIndex((prev) => 
+                    prev === 0 ? confession.images.length - 1 : prev - 1
+                  )}
+                >
+                  <FaChevronLeft />
+                </button>
+                
+                <button 
+                  className="image-viewer-nav next"
+                  onClick={() => setCurrentImageIndex((prev) => 
+                    prev === confession.images.length - 1 ? 0 : prev + 1
+                  )}
+                >
+                  <FaChevronRight />
+                </button>
+                
+                <div className="image-viewer-counter">
+                  {currentImageIndex + 1} / {confession.images.length}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

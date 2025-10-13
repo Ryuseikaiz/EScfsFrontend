@@ -547,3 +547,203 @@ body {
     width: 100%;
   }
 }
+
+/* Spotify Player - Fixed Bottom Right Corner (Notion Style) */
+.spotify-player {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  box-shadow: 
+    0 16px 48px rgba(255, 105, 180, 0.3),
+    0 0 0 1px rgba(255, 182, 217, 0.4);
+  border: 2px solid rgba(255, 182, 217, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease;
+  pointer-events: auto;
+}
+
+.spotify-player.minimized {
+  width: 360px;
+  height: 480px;
+}
+
+.spotify-player.expanded {
+  width: 500px;
+  height: 680px;
+}
+
+.spotify-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #ffb6d9 0%, #ff69b4 50%, #ff1493 100%);
+  color: white;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(255, 105, 180, 0.2);
+  user-select: none;
+}
+
+.spotify-header:active {
+  cursor: grabbing;
+}
+
+.spotify-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+.spotify-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.spotify-control-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.spotify-control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.spotify-control-btn:active {
+  transform: scale(0.95);
+}
+
+.spotify-content {
+  width: 100%;
+  height: calc(100% - 56px);
+  padding: 0;
+  background: transparent;
+}
+
+.spotify-content iframe {
+  display: block;
+}
+
+/* Show Spotify Button (when player is hidden) */
+.show-spotify-btn {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-pink) 0%, var(--dark-pink) 100%);
+  color: white;
+  border: 2px solid var(--light-pink);
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  animation: pulse 2s ease-in-out infinite;
+  pointer-events: auto;
+}
+
+.show-spotify-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px rgba(255, 105, 180, 0.6);
+}
+
+.show-spotify-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(255, 105, 180, 0.5);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(255, 105, 180, 0.8);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments for Spotify player */
+@media (max-width: 768px) {
+  .spotify-player.minimized {
+    width: 320px;
+    height: 450px;
+  }
+  
+  .spotify-player.expanded {
+    width: 90vw;
+    max-width: 450px;
+    height: 650px;
+  }
+  
+  .spotify-player {
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .show-spotify-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 1.3rem;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spotify-player.minimized {
+    width: calc(100vw - 30px);
+    max-width: 340px;
+    height: 420px;
+    bottom: 70px;
+    right: 15px;
+  }
+  
+  .spotify-player.expanded {
+    width: calc(100vw - 30px);
+    height: 550px;
+    bottom: 70px;
+  }
+  
+  .spotify-player {
+    right: 15px;
+  }
+  
+  .show-spotify-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 1.2rem;
+    bottom: 70px;
+    right: 15px;
+  }
+}

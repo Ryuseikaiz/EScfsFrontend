@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaHeart, FaPaperPlane, FaUserShield, FaSearch, FaClock, FaEye } from 'react-icons/fa';
+import { FaHeart, FaPaperPlane, FaUserShield, FaSearch, FaClock, FaEye, FaMusic, FaTimes, FaExpand, FaCompress, FaComment } from 'react-icons/fa';
 import { getConfessions, getConfessionsProgressive, submitConfession } from '../services/api';
 import ConfessionForm from '../components/ConfessionForm';
 import ConfessionModal from '../components/ConfessionModal';
@@ -15,6 +15,9 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12); // 12 confessions per page
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSpotify, setShowSpotify] = useState(true); // Hiện player mặc định
+  const [isSpotifyExpanded, setIsSpotifyExpanded] = useState(false);
+  const [isSpotifyMinimized, setIsSpotifyMinimized] = useState(true); // Bắt đầu ở trạng thái ẩn
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,14 +104,12 @@ function Home() {
   const formatDate = (dateString) => {
     if (!dateString) return 'Không rõ';
     const date = new Date(dateString);
-    return date.toLocaleString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
   };
 
   const getFacebookUrl = (confession) => {
@@ -289,9 +290,14 @@ function Home() {
                     </p>
 
                     <div className="card-footer">
-                      <span className="card-price">
-                        <FaEye /> {confession.reactionCount || 0} reactions • {confession.commentCount || 0} comments
-                      </span>
+                      <div className="card-stats">
+                        <span className="stat-item">
+                          <FaHeart style={{ color: '#ff69b4' }} /> {confession.reactionCount || 0}
+                        </span>
+                        <span className="stat-item">
+                          <FaComment style={{ color: '#ff69b4' }} /> {confession.commentCount || 0}
+                        </span>
+                      </div>
                       <button 
                         className="card-action-btn"
                         onClick={(e) => {
@@ -405,6 +411,74 @@ function Home() {
           confession={selectedConfession}
           onClose={() => setSelectedConfession(null)}
         />
+      )}
+
+      {/* Spotify Player - Luôn tồn tại trong DOM để nhạc không dừng */}
+      <div 
+        className={`spotify-player ${isSpotifyExpanded ? 'expanded' : 'minimized'}`}
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 99999,
+          display: isSpotifyMinimized ? 'none' : 'block'
+        }}
+      >
+        <div className="spotify-header">
+          <div className="spotify-title">
+            <FaMusic style={{ marginRight: '0.5rem' }} />
+            <span>Ensemble Stars Music</span>
+          </div>
+          <div className="spotify-controls">
+            <button 
+              className="spotify-control-btn"
+              onClick={() => setIsSpotifyExpanded(!isSpotifyExpanded)}
+              title={isSpotifyExpanded ? "Thu nhỏ" : "Phóng to"}
+            >
+              {isSpotifyExpanded ? <FaCompress /> : <FaExpand />}
+            </button>
+            <button 
+              className="spotify-control-btn"
+              onClick={() => setIsSpotifyMinimized(true)}
+              title="Ẩn player (nhạc vẫn chạy)"
+            >
+              <FaTimes />
+            </button>
+          </div>
+        </div>
+        <div className="spotify-content">
+          <iframe 
+            data-testid="embed-iframe" 
+            style={{
+              borderRadius: '12px',
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+            src="https://open.spotify.com/embed/playlist/6PUmJFyic4OAdXCee4PN8q?utm_source=generator"
+            frameBorder="0" 
+            allowFullScreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      {/* Show Spotify Button (when minimized) */}
+      {isSpotifyMinimized && (
+        <button 
+          className="show-spotify-btn"
+          onClick={() => setIsSpotifyMinimized(false)}
+          title="Hiện player (nhạc đang chạy)"
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 99999
+          }}
+        >
+          <FaMusic />
+        </button>
       )}
     </div>
   );
