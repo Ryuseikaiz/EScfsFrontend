@@ -282,6 +282,44 @@ body.dark-mode .btn-approve-all:hover:not(:disabled) {
   box-shadow: 0 6px 16px rgba(102, 187, 106, 0.35);
 }
 
+.btn-delete-all {
+  background: linear-gradient(135deg, #ef5350, #e53935);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
+}
+
+.btn-delete-all:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e53935, #c62828);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 83, 80, 0.4);
+}
+
+.btn-delete-all:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+body.dark-mode .btn-delete-all {
+  background: linear-gradient(135deg, rgba(239, 83, 80, 0.9), rgba(229, 57, 53, 0.9));
+  box-shadow: 0 4px 12px rgba(239, 83, 80, 0.25);
+}
+
+body.dark-mode .btn-delete-all:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(229, 57, 53, 1), rgba(198, 40, 40, 1));
+  box-shadow: 0 6px 16px rgba(239, 83, 80, 0.35);
+}
+
 /* Confessions List */
 .confessions-section {
   margin-top: 30px;
@@ -525,6 +563,26 @@ body.dark-mode .btn.btn-success:hover {
 
 body.dark-mode .btn.btn-danger {
   background: rgba(239, 83, 80, 0.85);
+}
+
+.btn.btn-warning {
+  background: linear-gradient(135deg, #ffa726, #fb8c00);
+  color: white;
+}
+
+body.dark-mode .btn.btn-warning {
+  background: linear-gradient(135deg, rgba(255, 167, 38, 0.85), rgba(251, 140, 0, 0.85));
+}
+
+.btn.btn-warning:hover {
+  background: linear-gradient(135deg, #fb8c00, #f57c00);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 167, 38, 0.4);
+}
+
+body.dark-mode .btn.btn-warning:hover {
+  background: linear-gradient(135deg, rgba(251, 140, 0, 0.95), rgba(245, 124, 0, 0.95));
+  box-shadow: 0 4px 12px rgba(255, 167, 38, 0.3);
 }
 
 .btn.btn-danger:hover {

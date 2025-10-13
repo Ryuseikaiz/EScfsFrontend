@@ -94,8 +94,18 @@ export const approveAllConfessions = async (sourceFilter = 'all', statusFilter =
   return response.data;
 };
 
+export const rejectConfession = async (id, sourceType) => {
+  const response = await api.post(`/admin/reject/${id}`, { sourceType });
+  return response.data;
+};
+
 export const deleteConfession = async (id, sourceType) => {
   const response = await api.delete(`/admin/delete/${id}`, { data: { sourceType } });
+  return response.data;
+};
+
+export const deleteAllConfessions = async (sourceFilter = 'all', statusFilter = 'approved') => {
+  const response = await api.post('/admin/delete-all', { sourceFilter, statusFilter });
   return response.data;
 };
 

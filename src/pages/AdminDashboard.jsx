@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock, FaMoon, FaSun, FaCheckDouble } from 'react-icons/fa';
-import { getPendingConfessions, approveConfession, approveAllConfessions, deleteConfession, getStats } from '../services/api';
+import { FaSignOutAlt, FaFilter, FaCheck, FaTimes, FaChartBar, FaClock, FaMoon, FaSun, FaCheckDouble, FaBan, FaTrashAlt } from 'react-icons/fa';
+import { getPendingConfessions, approveConfession, approveAllConfessions, rejectConfession, deleteConfession, deleteAllConfessions, getStats } from '../services/api';
 import './AdminDashboard.css';
 
 function AdminDashboard() {
@@ -84,8 +84,26 @@ function AdminDashboard() {
     }
   };
 
+  const handleReject = async (confession) => {
+    if (!window.confirm(`Từ chối confession này?\n\n"${confession.content.substring(0, 100)}..."`)) {
+      return;
+    }
+
+    try {
+      setProcessingId(confession.id);
+      await rejectConfession(confession.id, confession.sourceType);
+      alert('🚫 Đã từ chối confession!');
+      fetchData();
+    } catch (err) {
+      console.error('Error rejecting confession:', err);
+      alert('❌ Lỗi khi từ chối confession: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   const handleDelete = async (confession) => {
-    if (!window.confirm(`Xóa confession này?\n\n"${confession.content.substring(0, 100)}..."`)) {
+    if (!window.confirm(`Xóa vĩnh viễn confession này?\n\n"${confession.content.substring(0, 100)}..."`)) {
       return;
     }
 
@@ -128,6 +146,42 @@ function AdminDashboard() {
     } catch (err) {
       console.error('Error in bulk approve:', err);
       alert('❌ Lỗi khi duyệt hàng loạt: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    const targetConfessions = confessions.filter(c => 
+      statusFilter === 'all' 
+        ? (c.status === 'approved' || c.status === 'rejected') 
+        : c.status === statusFilter
+    );
+    
+    if (targetConfessions.length === 0) {
+      alert('Không có confession nào để xóa!');
+      return;
+    }
+
+    const filterText = sourceFilter === 'all' ? 'tất cả nguồn' : 
+                       sourceFilter === 'website' ? 'từ Website' : 'từ Google Sheets';
+    const statusText = statusFilter === 'approved' ? 'đã duyệt' : 
+                       statusFilter === 'rejected' ? 'đã từ chối' : 'đã duyệt/từ chối';
+
+    if (!window.confirm(`⚠️ XÓA TẤT CẢ ${targetConfessions.length} confession ${statusText} ${filterText}?\n\nHành động này KHÔNG THỂ HOÀN TÁC!`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      const result = await deleteAllConfessions(sourceFilter, statusFilter);
+      
+      alert(`✅ Hoàn thành!\n\nĐã xóa: ${result.successCount} confession\n${result.failCount > 0 ? `Lỗi: ${result.failCount} confession` : 'Không có lỗi!'}`);
+      fetchData();
+    } catch (err) {
+      console.error('Error in bulk delete:', err);
+      alert('❌ Lỗi khi xóa hàng loạt: ' + (err.response?.data?.error || err.message));
     } finally {
       setLoading(false);
     }
@@ -254,6 +308,12 @@ function AdminDashboard() {
                 Đã duyệt
               </button>
               <button
+                className={`btn ${statusFilter === 'rejected' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => setStatusFilter('rejected')}
+              >
+                Đã từ chối
+              </button>
+              <button
                 className={`btn ${statusFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
                 onClick={() => setStatusFilter('all')}
               >
@@ -262,7 +322,7 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* Bulk Actions */}
+          {/* Bulk Actions for Pending */}
           {statusFilter === 'pending' && confessions.filter(c => c.status === 'pending').length > 0 && (
             <div className="filter-group bulk-actions">
               <label>Thao tác hàng loạt:</label>
@@ -272,6 +332,20 @@ function AdminDashboard() {
                 disabled={loading}
               >
                 <FaCheckDouble /> Duyệt tất cả ({confessions.filter(c => c.status === 'pending').length})
+              </button>
+            </div>
+          )}
+
+          {/* Bulk Actions for Approved/Rejected */}
+          {(statusFilter === 'approved' || statusFilter === 'rejected') && confessions.filter(c => c.status === statusFilter).length > 0 && (
+            <div className="filter-group bulk-actions">
+              <label>Thao tác hàng loạt:</label>
+              <button
+                className="btn btn-delete-all"
+                onClick={handleDeleteAll}
+                disabled={loading}
+              >
+                <FaTrashAlt /> Xóa tất cả ({confessions.filter(c => c.status === statusFilter).length})
               </button>
             </div>
           )}
@@ -349,14 +423,23 @@ function AdminDashboard() {
                   )}
 
                   <div className="confession-actions">
-                    {confession.status !== 'approved' && (
-                      <button
-                        className="btn btn-success"
-                        onClick={() => handleApprove(confession)}
-                        disabled={processingId === confession.id}
-                      >
-                        <FaCheck /> {processingId === confession.id ? 'Đang xử lý...' : 'Duyệt'}
-                      </button>
+                    {confession.status === 'pending' && (
+                      <>
+                        <button
+                          className="btn btn-success"
+                          onClick={() => handleApprove(confession)}
+                          disabled={processingId === confession.id}
+                        >
+                          <FaCheck /> {processingId === confession.id ? 'Đang xử lý...' : 'Duyệt'}
+                        </button>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleReject(confession)}
+                          disabled={processingId === confession.id}
+                        >
+                          <FaBan /> Từ chối
+                        </button>
+                      </>
                     )}
                     <button
                       className="btn btn-danger"
