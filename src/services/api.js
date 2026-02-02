@@ -79,8 +79,10 @@ export const adminLogin = async (username, password) => {
   return response.data;
 };
 
-export const getPendingConfessions = async (source = 'all') => {
-  const response = await api.get('/admin/pending', { params: { source } });
+export const getPendingConfessions = async (source = 'all', page = 1, limit = 50, status = 'pending') => {
+  const response = await api.get('/admin/pending', { 
+    params: { source, page, limit, status } 
+  });
   return response.data;
 };
 

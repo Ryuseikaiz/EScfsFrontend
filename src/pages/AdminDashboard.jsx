@@ -13,6 +13,8 @@ function AdminDashboard() {
   const [error, setError] = useState(null);
   const [processingId, setProcessingId] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +24,12 @@ function AdminDashboard() {
       return;
     }
 
-    fetchData();
+    // Reset pagination when filters change
+    setPage(1);
+    setConfessions([]);
+    setHasMore(true);
+    fetchData(1, true); // initial load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, sourceFilter, statusFilter]);
 
   useEffect(() => {
@@ -34,23 +41,30 @@ function AdminDashboard() {
     }
   }, [isDarkMode]);
 
-  const fetchData = async () => {
+  const fetchData = async (pageNum = 1, isInitial = false) => {
     try {
+      if (!isInitial && !hasMore) return;
+      
       setLoading(true);
-      const [confessionsData, statsData] = await Promise.all([
-        getPendingConfessions(sourceFilter),
-        getStats()
-      ]);
       
-      let filteredConfessions = confessionsData.confessions || [];
+      // Pass pagination params AND status to the API
+      const confessionsData = await getPendingConfessions(sourceFilter, pageNum, 10, statusFilter);
+      const statsData = await getStats();
       
-      // Filter by status
-      if (statusFilter !== 'all') {
-        filteredConfessions = filteredConfessions.filter(c => c.status === statusFilter);
+      const newConfessions = confessionsData.confessions || [];
+      const pagination = confessionsData.pagination || {};
+      
+      setConfessions(prev => isInitial ? newConfessions : [...prev, ...newConfessions]);
+      setStats(confessionsData.stats || statsData);
+      
+      // Update pagination state
+      if (pagination.page >= pagination.totalPages || newConfessions.length === 0) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
       }
       
-      setConfessions(filteredConfessions);
-      setStats(confessionsData.stats || statsData);
+      setPage(pageNum);
       setError(null);
     } catch (err) {
       console.error('Error fetching data:', err);
@@ -66,23 +80,12 @@ function AdminDashboard() {
     }
   };
 
-  const handleApprove = async (confession) => {
-    if (!window.confirm(`Duyệt confession này?\n\n"${confession.content.substring(0, 100)}..."`)) {
-      return;
-    }
-
-    try {
-      setProcessingId(confession.id);
-      await approveConfession(confession.id, confession.sourceType);
-      alert('✅ Đã duyệt và đăng confession lên Facebook!');
-      fetchData();
-    } catch (err) {
-      console.error('Error approving confession:', err);
-      alert('❌ Lỗi khi duyệt confession: ' + (err.response?.data?.error || err.message));
-    } finally {
-      setProcessingId(null);
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      fetchData(page + 1, false);
     }
   };
+
 
   const handleReject = async (confession) => {
     if (!window.confirm(`Từ chối confession này?\n\n"${confession.content.substring(0, 100)}..."`)) {
@@ -451,6 +454,20 @@ function AdminDashboard() {
                   </div>
                 </div>
               ))}
+              
+              {/* Load More Button */}
+              {hasMore && (
+                <div className="load-more-container" style={{ textAlign: 'center', marginTop: '2rem', marginBottom: '2rem' }}>
+                  <button 
+                    className="btn btn-primary" 
+                    onClick={handleLoadMore}
+                    disabled={loading}
+                    style={{ minWidth: '200px' }}
+                  >
+                    {loading ? 'Đang tải thêm...' : 'Tải thêm confessions'}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
