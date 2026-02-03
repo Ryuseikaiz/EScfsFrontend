@@ -296,6 +296,25 @@ function AdminDashboard() {
 
 
 
+          {/* Status Filter */}
+          <div className="filter-group">
+            <label>Trạng thái:</label>
+            <div className="filter-buttons">
+              <button
+                className={`btn ${statusFilter === 'pending' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => setStatusFilter('pending')}
+              >
+                Chờ duyệt
+              </button>
+              <button
+                className={`btn ${statusFilter === 'rejected' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => setStatusFilter('rejected')}
+              >
+                Đã từ chối
+              </button>
+            </div>
+          </div>
+
           {/* Bulk Actions for Pending */}
           {statusFilter === 'pending' && confessions.filter(c => c.status === 'pending').length > 0 && (
             <div className="filter-group bulk-actions">
@@ -306,6 +325,20 @@ function AdminDashboard() {
                 disabled={loading}
               >
                 <FaCheckDouble /> Duyệt tất cả ({confessions.filter(c => c.status === 'pending').length})
+              </button>
+            </div>
+          )}
+
+          {/* Bulk Actions for Rejected */}
+          {statusFilter === 'rejected' && confessions.filter(c => c.status === 'rejected').length > 0 && (
+            <div className="filter-group bulk-actions">
+              <label>Thao tác hàng loạt:</label>
+              <button
+                className="btn btn-delete-all"
+                onClick={handleDeleteAll}
+                disabled={loading}
+              >
+                <FaTrashAlt /> Xóa tất cả ({confessions.filter(c => c.status === 'rejected').length})
               </button>
             </div>
           )}
