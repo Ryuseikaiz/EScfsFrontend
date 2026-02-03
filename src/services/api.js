@@ -106,6 +106,11 @@ export const deleteConfession = async (id, sourceType) => {
   return response.data;
 };
 
+export const deleteAllConfessions = async (sourceFilter = 'all', statusFilter = 'approved') => {
+  const response = await api.post('/admin/delete-all', { sourceFilter, statusFilter });
+  return response.data;
+};
+
 
 
 export const getStats = async () => {
