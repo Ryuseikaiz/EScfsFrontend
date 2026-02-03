@@ -139,13 +139,13 @@ function Home() {
         {/* Character decorations */}
         <div className="navbar-character left">
           <img 
-            src="https://i.ibb.co/v6c7hSgY/284.png" 
+            src="https://static.wikia.nocookie.net/ensemble-stars/images/8/80/Hiiro_Amagi_Work_Unit_Outfit_Chibi.png/revision/latest/scale-to-width-down/316?cb=20250630193255" 
             alt="Character decoration"
           />
         </div>
         <div className="navbar-character right">
           <img 
-            src="https://i.ibb.co/wr4gMmZJ/316.png" 
+            src="https://static.wikia.nocookie.net/ensemble-stars/images/0/03/Hiiro_Amagi_Work_Casual_%28Spring-Summer%29_Outfit_Chibi.png/revision/latest/scale-to-width-down/211?cb=20250630192901" 
             alt="Character decoration"
           />
         </div>
