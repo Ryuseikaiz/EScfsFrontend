@@ -294,36 +294,7 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* Status Filter */}
-          <div className="filter-group">
-            <label>Trạng thái:</label>
-            <div className="filter-buttons">
-              <button
-                className={`btn ${statusFilter === 'pending' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setStatusFilter('pending')}
-              >
-                Chờ duyệt
-              </button>
-              <button
-                className={`btn ${statusFilter === 'approved' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setStatusFilter('approved')}
-              >
-                Đã duyệt
-              </button>
-              <button
-                className={`btn ${statusFilter === 'rejected' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setStatusFilter('rejected')}
-              >
-                Đã từ chối
-              </button>
-              <button
-                className={`btn ${statusFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => setStatusFilter('all')}
-              >
-                Tất cả
-              </button>
-            </div>
-          </div>
+
 
           {/* Bulk Actions for Pending */}
           {statusFilter === 'pending' && confessions.filter(c => c.status === 'pending').length > 0 && (
@@ -339,19 +310,7 @@ function AdminDashboard() {
             </div>
           )}
 
-          {/* Bulk Actions for Approved/Rejected */}
-          {(statusFilter === 'approved' || statusFilter === 'rejected') && confessions.filter(c => c.status === statusFilter).length > 0 && (
-            <div className="filter-group bulk-actions">
-              <label>Thao tác hàng loạt:</label>
-              <button
-                className="btn btn-delete-all"
-                onClick={handleDeleteAll}
-                disabled={loading}
-              >
-                <FaTrashAlt /> Xóa tất cả ({confessions.filter(c => c.status === statusFilter).length})
-              </button>
-            </div>
-          )}
+
         </div>
 
         {/* Confessions List */}
